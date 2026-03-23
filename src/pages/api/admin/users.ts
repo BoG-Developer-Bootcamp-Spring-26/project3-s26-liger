@@ -2,6 +2,7 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
 import { getAllUsers } from "../../../../server/mongodb/actions/users"
 import { UserData } from "../../../types/types"
+import { connectDb } from "../../../../server/mongodb/connectDb"
 
 type UsersData = {
     users?: UserData[];
@@ -37,7 +38,7 @@ export default async function handler(
             }); // 200 : working as intended, the Good response
         } catch(e) {
             res.status(500).json({
-                message: "An error occurred while fetching the data of all users."
+                message: `An error occurred while fetching the data of all users. ${e}`
             })
         }
     } else {
@@ -46,3 +47,5 @@ export default async function handler(
         });
     }
 }
+
+connectDb();
