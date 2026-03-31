@@ -45,7 +45,7 @@ export default async function handler(
             res.status(200).json({
                 user_id: user._id,
                 is_admin: user.admin,
-                message: `Successfully fetched data for all users!`
+                message: `Successfully verified user!`
             }); // 200 : working as intended, the Good response
         } catch(e) {
             res.status(500).json({
