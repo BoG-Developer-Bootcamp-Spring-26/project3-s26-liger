@@ -30,8 +30,8 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
                 name,
                 breed,
                 owner,
-                hoursTrained: 0,
-                profilePicture: null
+                hoursTrained,
+                profilePicture
             });
 
             return res.status(200).json({ message: "Animal created" });
