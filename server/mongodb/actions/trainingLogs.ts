@@ -19,7 +19,7 @@ export async function updateTrainingLog(traininglogId: string, newData: Training
 }
 
 export async function deleteTrainingLog(traininglogId: string) {
-    await TrainingLog.findByIdAndDelete(traininglogId);
+    return await TrainingLog.findByIdAndDelete(traininglogId);
 
 }
 

@@ -24,8 +24,7 @@ export async function updateUser(userId: string, newData: UserData) {
 }
 
 export async function deleteUser(userId: string) {
-    await User.findByIdAndDelete(userId);
-
+    return await User.findByIdAndDelete(userId);
 }
 
 // admin function - paginated
