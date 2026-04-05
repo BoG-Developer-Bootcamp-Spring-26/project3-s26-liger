@@ -2,7 +2,7 @@ const argon2 = require("argon2");
 import type {NextApiRequest, NextApiResponse} from 'next';
 import { connectDb } from "../../../server/mongodb/connectDb"
 
-import { createUser, updateUser } from "../../../server/mongodb/actions/users";
+import { createUser, updateUser, deleteUser } from "../../../server/mongodb/actions/users";
 import User from '../../../server/mongodb/models/user';
 
 /*
@@ -82,6 +82,24 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse)
         }
         catch (e) {
             return res.status(500).json({ error: "Error updating user." });
+        }
+    }
+
+    if (req.method === "DELETE") {
+        try {
+            const {id}  = req.body;
+            if (!id) {
+                return res.status(400).json({error: "Error: missing user id"});
+            }
+            const result = await deleteUser(id);
+            
+            if (!result) {
+                return res.status(404).json({ error: "User not found." });
+            }
+            return res.status(200).json("Successfully deleted user");
+        }
+        catch(e) {
+            return res.status(500).json({error: "Error deleting user."});
         }
     }
 };

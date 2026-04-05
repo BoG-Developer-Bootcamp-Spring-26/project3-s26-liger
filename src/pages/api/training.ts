@@ -3,7 +3,7 @@ import type {NextApiRequest, NextApiResponse} from 'next';
 import { connectDb } from "../../../server/mongodb/connectDb"
 import TrainingLog from '../../../server/mongodb/models/trainingLog'
 
-import { createTrainingLog, updateTrainingLog } from "../../../server/mongodb/actions/trainingLogs";
+import { createTrainingLog, deleteTrainingLog, updateTrainingLog } from "../../../server/mongodb/actions/trainingLogs";
 
 /*
 export interface TrainingLogData {
@@ -71,6 +71,24 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse)
             return res.status(500).json({ error: "Error updating training log." });
         }
     }
+
+    if (req.method === "DELETE") {
+            try {
+                const {id}  = req.body;
+                if (!id) {
+                    return res.status(400).json({error: "Error: missing training log id"});
+                }
+                const result = await deleteTrainingLog(id);
+                
+                if (!result) {
+                    return res.status(404).json({ error: "Training log not found." });
+                }
+                return res.status(200).json("Successfully deleted training log");
+            }
+            catch(e) {
+                return res.status(500).json({error: "Error deleting training log."});
+            }
+        }
     
 };
 

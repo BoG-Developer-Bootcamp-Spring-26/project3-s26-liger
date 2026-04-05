@@ -19,7 +19,7 @@ export async function updateAnimal(animalId: string, newData: AnimalData) {
 }
 
 export async function deleteAnimal(animalId: string) {
-    await Animal.findByIdAndDelete(animalId);
+    return await Animal.findByIdAndDelete(animalId);
 
 }
 

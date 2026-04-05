@@ -82,6 +82,24 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
             return res.status(500).json({ error: "Error updating animal." });
         }
     }
+
+    if (req.method === "DELETE") {
+            try {
+                const {id}  = req.body;
+                if (!id) {
+                    return res.status(400).json({error: "Error: missing animla id"});
+                }
+                const result = await deleteAnimal(id);
+                
+                if (!result) {
+                    return res.status(404).json({ error: "Animal not found." });
+                }
+                return res.status(200).json("Successfully deleted animal");
+            }
+            catch(e) {
+                return res.status(500).json({error: "Error deleting animal."});
+            }
+        }
 };
 connectDb();
 
