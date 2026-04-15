@@ -8,10 +8,46 @@ import {
   getAnimal, 
   updateAnimal, 
   deleteAnimal, 
-  getAllAnimals 
+  getAllAnimals,
+  getAnimalByOwner 
 } from "../../../server/mongodb/actions/animals";
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse){
+    if (req.method === 'GET') {
+            try {
+                // pagination: cursor is the _id of the animal in the page before this
+                // limit is limit for how many animals you want to fetch
+                const { id } = req.body;
+    
+                if (!id || Array.isArray(id)) {
+                    return res.status(500).json({ 
+                        message: 'Id is required to fetch animals!' 
+                    });
+                }
+    
+                // const limitNum = Number(limit);
+                // if (isNaN(limitNum)) {
+                //     return res.status(500).json({ 
+                //         message: 'Limit must be a number and is required for pagination to get all animals!' 
+                //     });
+                // }
+    
+                const animals = await getAnimalByOwner(id);
+                res.status(200).json({
+                    animals: animals,
+                    message: `Successfully fetched data for all animals!`
+                }); // 200 : working as intended, the Good response
+                
+            } catch(e) {
+                res.status(500).json({
+                    message: `An error occurred while fetching the data of all animals. ${e}`
+                })
+            }
+        } else {
+            res.status(500).json({
+                message: "Method not allowed. Only GET requests are supported."
+            });
+        }
    
     if (req.method === 'POST') {
         try {
@@ -57,6 +93,8 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
                 }
                 if (newProfilePicture) {
                     updateFields.profilePicture = newProfilePicture;
+                } else {
+                    updateFields.profilePicture = "https://atlantahumane.org/wp-content/uploads/2025/11/dog-hero.jpg";
                 }
                 const animal = updateAnimal(id, updateFields); 
                 

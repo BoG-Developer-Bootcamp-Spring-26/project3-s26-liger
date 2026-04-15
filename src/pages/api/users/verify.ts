@@ -14,32 +14,37 @@ type VerifyData = {
 export default async function handler(
     req: NextApiRequest, 
     res: NextApiResponse<VerifyData>) {
+    await connectDb();
     if (req.method === 'POST') {
         try {
             const { email, password } = req.body;
 
             if (!email) {
-                res.status(500).json({
+                return res.status(500).json({
                     message: "To verify user, email cannot be undefined or empty!"
                 })
             }
 
             if (!password) {
-                res.status(500).json({
+                return res.status(500).json({
                     message: "To verify user, password cannot be undefined or empty!"
                 })
             }
 
             const user = await getUserByEmail(email);
             if (!user) {
-                res.status(500).json({
+                console.log("username wrong");
+                return res.status(500).json({
                     message: `User info not valid, cannot verify!`
                 })
             }
 
             const isCorrect = await argon2.verify(user.password, password);
+
             if (!isCorrect) {
-                res.status(500).json({
+                console.log("password wrong");
+
+                return res.status(500).json({
                     message: `User info not valid, cannot verify!`
                 })
             }
@@ -61,23 +66,21 @@ export default async function handler(
                 maxAge: 60 * 60 * 24 * 7, // in seconds, lasts for 7 days
                 path: '/',
               }));
-
-            res.status(200).json({
+            console.log("yay");
+            return res.status(200).json({
                 user_id: user._id,
                 is_admin: user.admin,
                 message: `Successfully verified user!`
             }); // 200 : working as intended, the Good response
 
         } catch(e) {
-            res.status(500).json({
+            return res.status(500).json({
                 message: `An error occurred while verifying user. ${e}`
             })
         }
     } else {
-        res.status(500).json({
+        return res.status(500).json({
             message: "Method not allowed. Only POST requests are supported."
         });
     }
-}
-
-connectDb();
+};
