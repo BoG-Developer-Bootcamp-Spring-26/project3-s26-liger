@@ -24,11 +24,15 @@ export default function Login() {
             const data = await res.json();
 
             if (!res.ok) {
-                setError(data.error || "Login failed");
+                setError(data.message);
+                
                 return;
             }
             // redirect to dashboard on success
-            router.push("/dashboard");
+
+            // pass in owner id
+            const ownerId = data.user_id;
+            router.push('/animal-dashboard?ownerId=' + ownerId);
         } catch (err) {
             console.error(err);
             setError("Server error");

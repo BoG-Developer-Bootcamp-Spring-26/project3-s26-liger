@@ -23,6 +23,10 @@ export async function deleteAnimal(animalId: string) {
 
 }
 
+export async function getAnimalByOwner(ownerId: string) {
+    return await Animal.find({owner: ownerId});
+}
+
 // admin function - paginated
 // cursor is the last id of the previous page's object.
 // if getting 1st page, use cursor = start
