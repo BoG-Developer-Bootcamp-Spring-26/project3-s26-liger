@@ -21,8 +21,8 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse)
 {
     if (req.method === 'GET') {
      try {
-        const { id } = req.body;
-        if (!id) {
+        const { id } = await req.query;
+        if (!id || Array.isArray(id)) {
             return res.status(400).json({ error: "Missing user id." });                
         }
         
@@ -35,7 +35,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse)
             return res.status(500).json({ error: "Server error" });
         }
     }
-    
+
     if (req.method === 'POST') {
         try {
             const { user, animal, title, date, description, hours } = req.body;

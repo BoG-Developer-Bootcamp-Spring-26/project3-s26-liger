@@ -17,7 +17,8 @@ export default function Home() {
           setUser(null);
         }
     }
-  })
+    checkPastUser();
+  }, [])
 
   if (!loggedIn) {
     return (

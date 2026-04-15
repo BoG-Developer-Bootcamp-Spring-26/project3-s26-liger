@@ -17,7 +17,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
             try {
                 // pagination: cursor is the _id of the animal in the page before this
                 // limit is limit for how many animals you want to fetch
-                const { id } = req.body;
+                const { id } = req.query;
     
                 if (!id || Array.isArray(id)) {
                     return res.status(500).json({ 
@@ -35,11 +35,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
                     message: `An error occurred while fetching the data of all animals. ${e}`
                 })
             }
-        } else {
-            res.status(500).json({
-                message: "Method not allowed. Only GET requests are supported."
-            });
-        }
+        } 
    
     if (req.method === 'POST') {
         try {
@@ -48,18 +44,21 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
             if (!name || !breed || !owner || !hoursTrained) {
                 return res.status(400).json({ error: "Missing fields" });
             }
+            let pfp = profilePicture;
 
+            if(!profilePicture || profilePicture === "") {
+                pfp = "https://www.endcottagevets.co.uk/images/headers/end-cottage-default-int-983.webp";
+            } 
             const user = await User.findById(owner);
             if (!user) {
                 return res.status(400).json({ error: "Owner not found" });
             }
-            
             const animal = await createAnimal({
                 name,
                 breed,
                 owner,
                 hoursTrained,
-                profilePicture
+                profilePicture: pfp
             });
 
             return res.status(200).json({ message: "Animal created" });
