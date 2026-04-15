@@ -78,7 +78,7 @@ export default function Login() {
                     <div className="flex w-full flex-col gap-[26px]">
                         <label className="mb-[18px] block w-full">
                             <input
-                                className={`${heebo.className} w-full border-b-[2.5px] border-[#D21312] bg-transparent pb-[3px] text-[25px] font-light leading-none text-black outline-none placeholder:text-black`}
+                                className={`${heebo.className} w-full border-b-[2.5px] border-primary-red bg-transparent pb-[3px] text-[25px] font-light leading-none text-black outline-none placeholder:text-black`}
                                 type="email"
                                 name="email"
                                 id="efield"
@@ -91,7 +91,7 @@ export default function Login() {
 
                         <label className="mb-[18px] block w-full">
                             <input
-                                className={`${heebo.className} w-full border-b-[2.5px] border-[#D21312] bg-transparent pb-[3px] text-[25px] font-light leading-none text-black outline-none placeholder:text-black`}
+                                className={`${heebo.className} w-full border-b-[2.5px] border-primary-red bg-transparent pb-[3px] text-[25px] font-light leading-none text-black outline-none placeholder:text-black`}
                                 type="password"
                                 name="password"
                                 id="pfield"
@@ -104,7 +104,7 @@ export default function Login() {
 
                         <button
                             type="submit"
-                            className={`${heebo.className} mt-[10px] h-[70px] w-full rounded-[20px] bg-[#D21312] text-center text-[40px] font-medium leading-none text-white`}
+                            className={`${heebo.className} mt-[10px] h-[70px] w-full rounded-[20px] bg-primary-red text-center text-[40px] font-medium leading-none text-white`}
                         >
                             Log in
                         </button>

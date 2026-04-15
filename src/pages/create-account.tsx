@@ -93,7 +93,7 @@ export default function CreateAccountPage() {
             <div className="flex w-full flex-col gap-[26px]">
               <label className="mb-[18px] block w-full">
                 <input
-                  className={`${heebo.className} w-full border-b-[2.5px] border-[#D21312] bg-transparent pb-[3px] text-[25px] font-light leading-none text-black outline-none placeholder:text-black`}
+                  className={`${heebo.className} w-full border-b-[2.5px] border-primary-red bg-transparent pb-[3px] text-[25px] font-light leading-none text-black outline-none placeholder:text-black`}
                   type="text"
                   name="fullName"
                   autoComplete="name"
@@ -109,7 +109,7 @@ export default function CreateAccountPage() {
 
               <label className="mb-[18px] block w-full">
                 <input
-                  className={`${heebo.className} w-full border-b-[2.5px] border-[#D21312] bg-transparent pb-[3px] text-[25px] font-light leading-none text-black outline-none placeholder:text-black`}
+                  className={`${heebo.className} w-full border-b-[2.5px] border-primary-red bg-transparent pb-[3px] text-[25px] font-light leading-none text-black outline-none placeholder:text-black`}
                   type="email"
                   name="email"
                   autoComplete="email"
@@ -125,7 +125,7 @@ export default function CreateAccountPage() {
 
               <label className="mb-[18px] block w-full">
                 <input
-                  className={`${heebo.className} w-full border-b-[2.5px] border-[#D21312] bg-transparent pb-[3px] text-[25px] font-light leading-none text-black outline-none placeholder:text-black`}
+                  className={`${heebo.className} w-full border-b-[2.5px] border-primary-red bg-transparent pb-[3px] text-[25px] font-light leading-none text-black outline-none placeholder:text-black`}
                   type="password"
                   name="password"
                   autoComplete="new-password"
@@ -141,7 +141,7 @@ export default function CreateAccountPage() {
 
               <label className="mb-[18px] block w-full">
                 <input
-                  className={`${heebo.className} w-full border-b-[2.5px] border-[#D21312] bg-transparent pb-[3px] text-[25px] font-light leading-none text-black outline-none placeholder:text-black`}
+                  className={`${heebo.className} w-full border-b-[2.5px] border-primary-red bg-transparent pb-[3px] text-[25px] font-light leading-none text-black outline-none placeholder:text-black`}
                   type="password"
                   name="confirmPassword"
                   autoComplete="new-password"
@@ -159,7 +159,7 @@ export default function CreateAccountPage() {
                 <input
                   type="checkbox"
                   name="admin"
-                  className="relative h-[25px] w-[25px] appearance-none rounded-none border-[2.5px] border-[#D21312] bg-white align-middle checked:bg-[#D21312] checked:border-[#D21312] focus:outline-none after:absolute after:left-[7px] after:top-[3px] after:h-[12px] after:w-[6px] after:rotate-45 after:border-b-[3px] after:border-r-[3px] after:border-white after:content-[''] after:opacity-0 checked:after:opacity-100"
+                  className="relative h-[25px] w-[25px] appearance-none rounded-none border-[2.5px] border-primary-red bg-white align-middle checked:bg-primary-red checked:border-primary-red focus:outline-none after:absolute after:left-[7px] after:top-[3px] after:h-[12px] after:w-[6px] after:rotate-45 after:border-b-[3px] after:border-r-[3px] after:border-white after:content-[''] after:opacity-0 checked:after:opacity-100"
                   checked={admin}
                   onChange={(e) => {
                     setAdmin(e.target.checked);
@@ -178,7 +178,7 @@ export default function CreateAccountPage() {
               {/* Signup button */}
               <button
                 type="submit"
-                className={`${heebo.className} mt-[10px] h-[70px] w-full rounded-[20px] bg-[#D21312] text-center text-[40px] font-medium leading-none text-white`}
+                className={`${heebo.className} mt-[10px] h-[70px] w-full rounded-[20px] bg-primary-red text-center text-[40px] font-medium leading-none text-white`}
               >
                 Sign up
               </button>
