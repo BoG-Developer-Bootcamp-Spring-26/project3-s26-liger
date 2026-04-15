@@ -24,14 +24,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
                         message: 'Id is required to fetch animals!' 
                     });
                 }
-    
-                // const limitNum = Number(limit);
-                // if (isNaN(limitNum)) {
-                //     return res.status(500).json({ 
-                //         message: 'Limit must be a number and is required for pagination to get all animals!' 
-                //     });
-                // }
-    
                 const animals = await getAnimalByOwner(id);
                 res.status(200).json({
                     animals: animals,

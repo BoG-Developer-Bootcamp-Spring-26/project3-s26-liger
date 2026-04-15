@@ -3,7 +3,7 @@ import type {NextApiRequest, NextApiResponse} from 'next';
 import { connectDb } from "../../../server/mongodb/connectDb"
 import TrainingLog from '../../../server/mongodb/models/trainingLog'
 
-import { createTrainingLog, deleteTrainingLog, updateTrainingLog } from "../../../server/mongodb/actions/trainingLogs";
+import { createTrainingLog, deleteTrainingLog, updateTrainingLog, getTrainingLog } from "../../../server/mongodb/actions/trainingLogs";
 
 /*
 export interface TrainingLogData {
@@ -19,6 +19,23 @@ export interface TrainingLogData {
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse)
 {
+    if (req.method === 'GET') {
+     try {
+        const { id } = req.body;
+        if (!id) {
+            return res.status(400).json({ error: "Missing user id." });                
+        }
+        
+        const logs = await getTrainingLog(id);
+        res.status(200).json({
+            logs:logs,
+            message: "successfully got logs"
+            }); 
+        } catch(e) {
+            return res.status(500).json({ error: "Server error" });
+        }
+    }
+    
     if (req.method === 'POST') {
         try {
             const { user, animal, title, date, description, hours } = req.body;

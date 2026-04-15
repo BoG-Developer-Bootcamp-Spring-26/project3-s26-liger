@@ -2,7 +2,7 @@ const argon2 = require("argon2");
 import type {NextApiRequest, NextApiResponse} from 'next';
 import { connectDb } from "../../../server/mongodb/connectDb"
 
-import { createUser, updateUser, deleteUser } from "../../../server/mongodb/actions/users";
+import { createUser, updateUser, deleteUser, getUser} from "../../../server/mongodb/actions/users";
 import User from '../../../server/mongodb/models/user';
 
 /*
@@ -17,6 +17,22 @@ export interface UserData{
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse)
 {
+    if (req.method === "GET") {
+        try {
+            const {id} = req.body;
+            if (!id) {
+                return res.status(400).json({ error: "Missing user id." });
+            }
+            const user = await getUser(id);
+            res.status(200).json({
+                user:user,
+                message: "successfully got user"
+            }); 
+        } catch(e) {
+            return res.status(500).json({ error: "Server error" });
+        }
+    }
+
     if (req.method === 'POST') {
         try {
             const { fullName, email, password, admin } = req.body;
@@ -26,7 +42,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse)
             }
 
             const hashedPassword = await argon2.hash(password);
-            
+        
 
             await createUser({
                 fullName,
@@ -102,6 +118,8 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse)
             return res.status(500).json({error: "Error deleting user."});
         }
     }
+
+    
 };
 
 connectDb();

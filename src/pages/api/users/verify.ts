@@ -20,13 +20,13 @@ export default async function handler(
             const { email, password } = req.body;
 
             if (!email) {
-                return res.status(500).json({
+                return res.status(400).json({
                     message: "To verify user, email cannot be undefined or empty!"
                 })
             }
 
             if (!password) {
-                return res.status(500).json({
+                return res.status(400).json({
                     message: "To verify user, password cannot be undefined or empty!"
                 })
             }
@@ -34,7 +34,7 @@ export default async function handler(
             const user = await getUserByEmail(email);
             if (!user) {
                 console.log("username wrong");
-                return res.status(500).json({
+                return res.status(401).json({
                     message: `User info not valid, cannot verify!`
                 })
             }
@@ -44,14 +44,15 @@ export default async function handler(
             if (!isCorrect) {
                 console.log("password wrong");
 
-                return res.status(500).json({
+                return res.status(401).json({
                     message: `User info not valid, cannot verify!`
                 })
             }
 
             const token = jwt.sign(
                 { userId: user._id,
-                isAdmin: user.admin
+                isAdmin: user.admin,
+                fullName: user.fullName
                 },
                 process.env.JWT_SECRET,
                 { expiresIn: '7d' }

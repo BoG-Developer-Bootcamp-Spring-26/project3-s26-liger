@@ -1,20 +1,75 @@
 import { TrainingLogCard } from "../components/trainingLogCard";
 import { Sidebar } from "../components/sidebar";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 
 export default function Trainings() {
+    const [logs, setLogs] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchUser = async() =>{
+        try {
+            const res = await fetch("/api/me");
+            const data = await res.json();
+            if (res.ok) {
+                setUser(data.user);
+            }
+        }
+        catch(e) {
+            console.error(e);
+        }
+    }
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    if (!user) {
+        return;
+    }
+     const fetchLogs = async () => {
+      try {
+        const res = await fetch(`/api/training?id=${user.userId}`);
+        const data = await res.json();
+        setLogs(data.logs || []);
+        setLoading(false);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+  fetchLogs();
+  }, [user]);
+
+  if (loading) return <div className="flex flex-row h-screen w-screen">Loading...</div>;
+
+  if (!logs || logs.length === 0) {
     return(
-        <div className="flex flex-row h-screen w-screen">
-        <Sidebar currentPage="trainings" user="Long Lam" isAdmin={true}/>
+    <div className="flex flex-row h-screen w-screen">
+        <Sidebar currentPage="trainings" user={user.fullName} isAdmin={user.isAdmin}/>
         <div className="flex flex-1 flex-col items-center gap-4 py-8">
+            You have no training logs.
+        </div>
+    </div>
+
+    );
+  }
+
+  return(
+        <div className="flex flex-row h-screen w-screen">
+        <Sidebar currentPage="trainings" user={user.fullName} isAdmin={user.isAdmin}/>
+        <div className="flex flex-1 flex-col items-center gap-4 py-8">
+        {logs.map((log: any) => (
             <TrainingLogCard
-                user="Long Lam"
-                animal="Lucy"
-                breed = "Golden Retriever"
-                title="Complete sit lessons"
-                date={new Date("2024-06-01")}
-                description="Lucy finishes the sit lessons very well today. Should give her a treat."
+                user={user.fullName}
+                animal={log.animal.name}
+                breed = {log.animal.breed}
+                title={log.title}
+                date={log.date}
+                description={log.description}
                 hours={20}
             />
+        ))}
         </div>
         </div>
     );

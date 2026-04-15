@@ -18,6 +18,7 @@ export async function getUserByEmail(email: string) {
     return user;
 }
 
+
 export async function updateUser(userId: string, newData: UserData) {
     const user = User.findByIdAndUpdate(userId, newData);
     return user;
@@ -49,3 +50,4 @@ export async function getAllUsers(cursor: string, limit: number) {
         .sort({ _id: 1 });
     return users;
 }
+

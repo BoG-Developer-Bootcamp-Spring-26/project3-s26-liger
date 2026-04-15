@@ -15,7 +15,7 @@ export default function Login() {
 
     const tryLogin = async () =>{
         try {
-            const res = await fetch("/api/users/verify", {
+            const res = await fetch(`/api/users/verify`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
@@ -31,8 +31,8 @@ export default function Login() {
             // redirect to dashboard on success
 
             // pass in owner id
-            const ownerId = data.user_id;
-            router.push('/animal-dashboard?ownerId=' + ownerId);
+           
+            router.push('/trainings');
         } catch (err) {
             console.error(err);
             setError("Server error");
