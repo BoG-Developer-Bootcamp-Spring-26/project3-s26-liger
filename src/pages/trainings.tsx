@@ -44,7 +44,7 @@ export default function Trainings() {
   fetchLogs();
   }, [user]);
 
-  if (loading) return <div className="flex flex-row h-screen w-screen">Loading...</div>;
+  if (loading) return <div className="flex flex-row h-screen w-screen"></div>;
 
   if (!logs || logs.length === 0) {
     return(

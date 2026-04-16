@@ -52,7 +52,7 @@ export default function AnimalDashboard() {
   fetchAnimals();
   }, [user]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div></div>;
 
   if (!animals || animals.length === 0) {
     return (
