@@ -4,19 +4,19 @@ import searchLogo from "../../public/images/searchLogo.png";
 
 type Props = {
   isSearchable?: boolean;
-  searchText: string;
-  setSearchText: (newSearchText: string) => void;
+  searchText?: string;
+  setSearchText?: (newSearchText: string) => void;
 };
 
 export const TitleBar = ({
   isSearchable = false,
-  searchText,
-  setSearchText,
+  searchText = "",
+  setSearchText = () => {},
 }: Props) => {
   return (
-    <div className="flex flex-row w-screen items-center p-4 pl-8 shadow-[0_2px_2px_0_rgba(0,0,0,0.25)]">
-      <Image src={appLogo} alt="app logo" className="h-8 w-auto" />
-      <p className="ml-2 text-4xl font-medium font-oswald">Progress</p>
+    <div className="flex flex-row w-screen items-center p-3 pl-8 shadow-[0_2px_2px_0_rgba(0,0,0,0.25)]">
+      <Image src={appLogo} alt="app logo" className="h-7 w-auto" />
+      <p className="ml-2 text-3xl font-medium font-oswald">Progress</p>
 
       {isSearchable ? (
         <div className="flex flex-row border-1 border-gray-500 rounded-xl ml-20 w-3/7">
