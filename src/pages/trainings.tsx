@@ -2,6 +2,7 @@ import { TrainingLogCard } from "../components/trainingLogCard";
 import { Sidebar } from "../components/sidebar";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import CreateNewButton from "@/components/createNew";
 
 export default function Trainings() {
     const [logs, setLogs] = useState<any>(null);
@@ -44,14 +45,23 @@ export default function Trainings() {
   fetchLogs();
   }, [user]);
 
-  if (loading) return <div className="flex flex-row h-screen w-screen"></div>;
+  if (loading) return <div></div>;
+
 
   if (!logs || logs.length === 0) {
     return(
     <div className="flex flex-row h-screen w-screen">
         <Sidebar currentPage="trainings" user={user.fullName} isAdmin={user.isAdmin}/>
-        <div className="flex flex-1 flex-col items-center gap-4 py-8">
-            You have no training logs.
+        
+        <div className="flex flex-col flex-1 px-6">
+        <div className="header">
+                <h1>Training Logs</h1>
+                <CreateNewButton currentPage="training"></CreateNewButton>
+            </div>
+            <hr></hr>
+        <div>
+            <p className="margins-10px">You have no training logs.</p>
+        </div>
         </div>
     </div>
 
@@ -62,6 +72,10 @@ export default function Trainings() {
         <div className="flex flex-row h-screen w-screen">
         <Sidebar currentPage="trainings" user={user.fullName} isAdmin={user.isAdmin}/>
         <div className="flex flex-1 flex-col items-center gap-4 py-8">
+            <div className="header justify-between items-center">
+                <h1>Training Logs</h1>
+                <CreateNewButton currentPage="training"></CreateNewButton>
+            </div>
         {logs.map((log: any) => (
             <TrainingLogCard
                 user={user.fullName}

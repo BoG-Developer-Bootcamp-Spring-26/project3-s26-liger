@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Login from "./login";
 import Trainings from './trainings'
+
 export default function Home() {
   // check if logged in
   const [loggedIn, setLoggedIn] = useState(false);
@@ -21,9 +22,7 @@ export default function Home() {
   }, [])
 
   if (!loggedIn) {
-    return (
-      <Login/>
-    );
+    return (<Login/>);
   } else {
     return (<Trainings/>);
   }

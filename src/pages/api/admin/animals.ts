@@ -23,9 +23,9 @@ export default async function handler(
                     message: 'Cursor is required for pagination to get all animals!' 
                 });
             }
-
+            
             const limitNum = Number(limit);
-            if (isNaN(limitNum)) {
+            if (isNaN(limitNum) || !limitNum) {
                 return res.status(500).json({ 
                     message: 'Limit must be a number and is required for pagination to get all animals!' 
                 });

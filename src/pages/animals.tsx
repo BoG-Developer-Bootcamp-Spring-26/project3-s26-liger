@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import AnimalCard from "../components/animalCard";
 import { Sidebar } from "@/components/sidebar";
+import CreateNewButton from "@/components/createNew";
 import { useRouter } from "next/router";
+
 
 export default function AnimalDashboard() {
 
@@ -32,7 +34,6 @@ export default function AnimalDashboard() {
 
  
    
-
   useEffect(() => {
     if (!user) {
         return;
@@ -56,12 +57,20 @@ export default function AnimalDashboard() {
 
   if (!animals || animals.length === 0) {
     return (
-    <div className="flex flex-row h-screen w-screen">
-      <Sidebar currentPage={"animals"} user={user.fullName} isAdmin={user.isAdmin}></Sidebar>
-      <div className="flex flex-1 flex-col items-center gap-4 py-8">
-        <p>You have no animals. Would you like to add some?</p>
-      </div>
-      </div>
+     <div className="flex flex-row h-screen w-screen">
+            <Sidebar currentPage="animals" user={user.fullName} isAdmin={user.isAdmin}/>
+            
+            <div className="flex flex-col flex-1 px-6">
+            <div className="header">
+                    <h1>Animals</h1>
+                    <CreateNewButton currentPage="animals"></CreateNewButton>
+                </div>
+                <hr></hr>
+            <div>
+                <p className="margins-10px">You have no animals.</p>
+            </div>
+            </div>
+        </div>
       );
   }
 
@@ -70,12 +79,13 @@ export default function AnimalDashboard() {
       <Sidebar currentPage={"animals"} user={user.fullName} isAdmin={user.isAdmin}></Sidebar>
       
       <div className="flex flex-col flex-1 px-6">
-        <div className="header justify-between items-center">
-            <h1>Animals</h1>
-            <button >Create New</button>
+        <div className="header">
+            <p style={{fontSize:'20px'}}>Animals</p>
+            <CreateNewButton currentPage="animals"></CreateNewButton>
         </div>
-        
+
         <hr></hr>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 py-8">
             {animals.map((animal: any) => (
             <AnimalCard
