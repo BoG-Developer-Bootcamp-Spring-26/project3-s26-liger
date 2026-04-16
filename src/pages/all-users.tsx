@@ -1,5 +1,6 @@
 import { Sidebar } from "../components/sidebar";
 import { TitleBar } from "../components/titlebar";
+import UserCard from "../components/userCard";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
@@ -84,7 +85,7 @@ export default function AllUsers() {
               <p className="m-3">There are no users.</p>
             </div>
           ) : (
-            <div className="px-6 py-5">
+            <div className="grid grid-cols-1 gap-6 px-6 py-5 sm:grid-cols-2 lg:grid-cols-3">
               {users
                 .filter((u: any) => {
                   if (!searchText) {
@@ -95,9 +96,11 @@ export default function AllUsers() {
                     .includes(searchText.toLowerCase());
                 })
                 .map((u: any) => (
-                  <p key={u._id} className="mb-2">
-                    {u.fullName}
-                  </p>
+                  <UserCard
+                    key={u._id}
+                    fullName={u.fullName}
+                    isAdmin={u.admin}
+                  />
                 ))}
             </div>
           )}
