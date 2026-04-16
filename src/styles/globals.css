@@ -60,9 +60,8 @@ body {
 .header{
   height:20px;
   margin:20px;
-  padding:10px;
+  padding:5px;
   flex-direction: row;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
