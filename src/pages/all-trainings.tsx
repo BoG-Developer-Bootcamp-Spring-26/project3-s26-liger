@@ -81,11 +81,13 @@ export default function AllTrainings() {
   return(
         <div className="flex flex-row h-screen w-screen">
         <Sidebar currentPage="all-trainings" user={user.fullName} isAdmin={user.isAdmin}/>
-        <div className="flex flex-1 flex-col items-center gap-4 py-8">
-            <div className="header justify-between items-center">
-                <h1>All Training Logs</h1>
-                
-            </div>
+        <div className="flex flex-col flex-1 px-6">
+            
+            <div className="header">
+                <p style={{ fontSize: "20px" }}>All training</p>
+             </div>
+            <hr/>
+            <div className="flex flex-col items-center gap-4 py-8">
             {logs.map((log: any) => (
                 <TrainingLogCard
                     user={user.fullName}
@@ -97,12 +99,14 @@ export default function AllTrainings() {
                     hours={log.hoursTrained}
                 />
             ))}
-        </div>
-        <div className="flex items-end justify-center">
+            </div>
+             <div className="flex items-end justify-center">
                 <button onClick={() => {if(page > 1){setPage(page - 1)}}}> ← </button>
                 <p> {page} </p>
                 <button onClick={() => { if (logs.length === limit) setPage(page + 1)}}> → </button>
+            </div>
         </div>
+       
         </div>
     );
 }

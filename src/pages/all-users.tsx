@@ -82,6 +82,7 @@ export default function AllUsers() {
         <div className="flex flex-row h-screen w-screen">
         <Sidebar currentPage="all-users" user={user.fullName} isAdmin={user.isAdmin}/>
         <div className="flex flex-1 flex-col items-center gap-4 py-8">
+
             <div className="header justify-between items-center">
                 <h1>All users</h1>
                 
@@ -89,12 +90,13 @@ export default function AllUsers() {
             {users.map((u: any) => (
                 <p>{u.fullName}</p>
             ))}
-        </div>
-        <div className="flex items-end justify-center">
+            <div className="flex items-end justify-center">
                 <button onClick={() => {if(page > 1){setPage(page - 1)}}}> ← </button>
                 <p> {page} </p>
                 <button onClick={() => { if (users.length === limit) setPage(page + 1)}}> → </button>
         </div>
+        </div>
+        
         </div>
     );
 }
