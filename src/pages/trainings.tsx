@@ -34,16 +34,19 @@ export default function Trainings() {
     }
      const fetchLogs = async () => {
       try {
-        const res = await fetch(`/api/training?id=${user.userId}`);
-        const data = await res.json();
-        setLogs(data.logs || []);
-        setLoading(false);
+        const res = await fetch(`/api/users/training?userId=${user.userId}`);
+        if (res.ok) {
+            const data = await res.json();
+            setLogs(data.logs || []);
+            setLoading(false);
+        }
       } catch (e) {
         console.error(e);
       }
     };
   fetchLogs();
   }, [user]);
+
 
   if (loading) return <div></div>;
 

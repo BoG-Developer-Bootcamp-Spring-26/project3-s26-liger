@@ -7,16 +7,12 @@ import {
   createAnimal, 
   getAnimal, 
   updateAnimal, 
-  deleteAnimal, 
-  getAllAnimals,
-  getAnimalByOwner 
+  deleteAnimal 
 } from "../../../server/mongodb/actions/animals";
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse){
     if (req.method === 'GET') {
             try {
-                // pagination: cursor is the _id of the animal in the page before this
-                // limit is limit for how many animals you want to fetch
                 const { id } = req.query;
     
                 if (!id || Array.isArray(id)) {
@@ -24,7 +20,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
                         message: 'Id is required to fetch animals!' 
                     });
                 }
-                const animals = await getAnimalByOwner(id);
+                const animals = await getAnimal(id);
                 res.status(200).json({
                     animals: animals,
                     message: `Successfully fetched data for all animals!`

@@ -1,6 +1,7 @@
 import TrainingLog from "../models/trainingLog";
 import { TrainingLogData } from "../../../src/types/types";
 import { Types } from "mongoose";
+import trainingLog from "../models/trainingLog";
 
 export async function createTrainingLog(traininglogData: TrainingLogData) {
     const traininglog = new TrainingLog(traininglogData);
@@ -8,8 +9,12 @@ export async function createTrainingLog(traininglogData: TrainingLogData) {
 }
 
 export async function getTrainingLog(traininglogId: string) {
-    const traininglog = TrainingLog.findById(traininglogId);
-    return traininglog;
+    const traininglog = TrainingLog.findById(traininglogId).populate("animal");
+    return trainingLog;
+}
+
+export async function getTrainingLogByUser(userId: string) {
+    return await TrainingLog.find({user: userId}).populate("animal");
 
 }
 
@@ -31,7 +36,7 @@ export async function deleteTrainingLog(traininglogId: string) {
 export async function getAllTrainingLogs(cursor: string, limit: number) {
     if (cursor === "start") {
         // get 1st page
-        return TrainingLog.find().limit(limit).sort({ _id: 1 });
+        return TrainingLog.find().limit(limit).sort({ _id: 1 }).populate("animal");
       }
 
       if (cursor !== "start" && !Types.ObjectId.isValid(cursor)) {
@@ -42,6 +47,7 @@ export async function getAllTrainingLogs(cursor: string, limit: number) {
         _id: { $gt: new Types.ObjectId(cursor) } // convert string to ObjectId
       })
         .limit(limit)
-        .sort({ _id: 1 });
+        .sort({ _id: 1 })
+        .populate("animal");
     return traininglogs;
 }

@@ -9,11 +9,11 @@ import { useRouter } from "next/router";
 export default function AllAnimals() {
     const [animals, setAnimals] = useState<any[]>([]);
       const [loading, setLoading] = useState(true);
-      const limit = 25;
+      const limit = 6;
       const [user, setUser] = useState<any>(null);
       const router = useRouter();
       const [lastAnimalId, setLastAnimal] = useState('start');
-      const [page, setPageNum] = useState(1);
+      const [page, setPage] = useState(1);
       useEffect(() => {
         const fetchUser = async() =>{
             try {
@@ -48,7 +48,9 @@ export default function AllAnimals() {
                 const data = await res.json();
                 setAnimals(data.animals || []);
                 setLoading(false);
-                setLastAnimal(data.animals[data.animals.length - 1]._id);
+                if (data.animals?.length > 0) {
+                    setLastAnimal(data.animals[data.animals.length - 1]._id);
+                }
             } else  {
                 const error = await res.json();
                 console.log(error.message);
@@ -75,13 +77,6 @@ export default function AllAnimals() {
                 <div>
                     <p className="margins-10px">There are no animals.</p>
                 </div>
-
-               <div className="flex items-end justify-center">
-                <button onClick={() => {if(page > 1){setPageNum(page - 1)}}}> ← </button>
-                <p> {page} </p>
-                <button onClick={() => { if (animals.length === limit) setPageNum(page + 1)}}> → </button>
-            </div>
-
                 </div>
             </div>
           );
@@ -111,9 +106,9 @@ export default function AllAnimals() {
             </div>
 
             <div className="flex items-end justify-center">
-                <button onClick={() => {if(page > 1){setPageNum(page - 1)}}}> ← </button>
+                <button onClick={() => {if(page > 1){setPage(page - 1)}}}> ← </button>
                 <p> {page} </p>
-                <button onClick={() => { if (animals.length === limit) setPageNum(page + 1)}}> → </button>
+                <button onClick={() => { if (animals.length === limit) setPage(page + 1)}}> → </button>
             </div>
 
           </div>

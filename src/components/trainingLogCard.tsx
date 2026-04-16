@@ -14,9 +14,11 @@ type Props = {
 };
 
 export const TrainingLogCard = ({ user, animal, breed, title, date, description, hours }: Props) => {
-    const day = date.getDate();
-    const month = date.toLocaleString('default', { month: 'short' });
-    const year = date.getFullYear();
+    const parsedDate = new Date(date);
+
+    const day = parsedDate.getDate();
+    const month = parsedDate.toLocaleString("default", { month: "short" });
+    const year = parsedDate.getFullYear();
 
 	return <div className="flex w-6/7 rounded-xl bg-white drop-shadow font-heebo">
         <div className="flex font-oswald flex-col items-center w-1/10 bg-[#070A52D9] text-white py-4 px-2 rounded-l-xl gap-1">
