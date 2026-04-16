@@ -1,10 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Heebo, Oswald } from "next/font/google";
+import { Heebo } from "next/font/google";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { TitleBar } from "@/components/titlebar";
 
-const oswald = Oswald({ subsets: ["latin"], weight: ["500"] });
 const heebo = Heebo({ subsets: ["latin"], weight: ["300", "500", "700"] });
 
 export default function CreateAccountPage() {
@@ -23,7 +22,7 @@ export default function CreateAccountPage() {
     }
 
     try {
-      const res = await fetch("/api/users", {
+      const res = await fetch("/api/user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fullName, email, password, admin }),
@@ -37,7 +36,7 @@ export default function CreateAccountPage() {
       }
 
       // redirect to dashboard on success
-      router.push("/dashboard");
+      router.push("/trainings");
     } catch (e) {
       console.error(e);
       setError("Server error");
@@ -48,30 +47,7 @@ export default function CreateAccountPage() {
     <div className="relative min-h-screen overflow-hidden bg-white">
       {/* Decorative bottom-left quarter circle (shared size) */}
       <div className="pointer-events-none absolute bottom-[-198px] left-[-182px] h-[395px] w-[360px] rounded-full bg-[#ED2B2A]" />
-      <header className="relative h-[102px] w-full bg-white">
-        {/* Figma frame is 1728px wide; center it on large screens */}
-        <div className="relative mx-auto h-full w-full max-w-[1728px]">
-          {/* Logo + title group positioned per Figma */}
-          <div className="absolute left-[49px] top-[26px] flex items-center gap-[6px]">
-            <Image
-              src="/images/applogo.png"
-              alt="App logo"
-              width={83}
-              height={50}
-              priority
-            />
-            <span
-              className={`${oswald.className} text-[50px] font-medium leading-none tracking-[-0.025em] text-black`}
-            >
-              Progress
-            </span>
-          </div>
-        </div>
-
-        {/* Divider + accent lines */}
-        <div className="absolute bottom-[1px] left-0 right-0 h-px bg-gray-200" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-purple-500" />
-      </header>
+      <TitleBar isSearchable={false} />
 
       <main className="flex justify-center px-6 pt-[115px]">
         <div className="w-[700px] origin-top scale-[0.92] px-4">
@@ -199,4 +175,3 @@ export default function CreateAccountPage() {
     </div>
   );
 }
-

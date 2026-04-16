@@ -118,7 +118,7 @@ export default function AllTrainings() {
                   .map((log: any) => (
                     <TrainingLogCard
                       key={log._id}
-                      user={user.fullName}
+                      user={log.user.fullName}
                       animal={log.animal.name}
                       breed={log.animal.breed}
                       title={log.title}

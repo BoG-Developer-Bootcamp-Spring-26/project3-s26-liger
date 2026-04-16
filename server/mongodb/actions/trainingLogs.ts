@@ -1,5 +1,6 @@
 import TrainingLog from "../models/trainingLog";
 import Animal from "../models/animal";
+import "../models/user";
 import { TrainingLogData } from "../../../src/types/types";
 import { Types } from "mongoose";
 
@@ -96,7 +97,11 @@ export async function deleteTrainingLog(traininglogId: string) {
 export async function getAllTrainingLogs(cursor: string, limit: number) {
   if (cursor === "start") {
     // get 1st page
-    return TrainingLog.find().limit(limit).sort({ _id: 1 }).populate("animal");
+    return TrainingLog.find()
+      .limit(limit)
+      .sort({ _id: 1 })
+      .populate("animal")
+      .populate("user");
   }
 
   if (cursor !== "start" && !Types.ObjectId.isValid(cursor)) {
@@ -108,7 +113,8 @@ export async function getAllTrainingLogs(cursor: string, limit: number) {
   })
     .limit(limit)
     .sort({ _id: 1 })
-    .populate("animal");
+    .populate("animal")
+    .populate("user");
   return traininglogs;
 }
 
