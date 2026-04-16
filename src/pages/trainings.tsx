@@ -58,7 +58,7 @@ export default function Trainings() {
         
         <div className="flex flex-col flex-1 px-6">
         <div className="header">
-                <h1>Training Logs</h1>
+                <p style={{fontSize:'20px'}}>Training Logs</p>
                 <CreateNewButton currentPage="training"></CreateNewButton>
             </div>
             <hr></hr>
@@ -76,7 +76,7 @@ export default function Trainings() {
         <Sidebar currentPage="trainings" user={user.fullName} isAdmin={user.isAdmin}/>
         <div className="flex flex-1 flex-col items-center gap-4 py-8">
             <div className="header justify-between items-center">
-                <h1>Training Logs</h1>
+                <p style={{fontSize:'20px'}}>Training Logs</p>
                 <CreateNewButton currentPage="training"></CreateNewButton>
             </div>
         {logs.map((log: any) => (

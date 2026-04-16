@@ -61,7 +61,7 @@ export default function AnimalDashboard() {
             
             <div className="flex flex-col flex-1 px-6">
             <div className="header">
-                    <h1>Animals</h1>
+                    <p style={{fontSize:'20px'}}>Animals</p>
                     <CreateNewButton currentPage="animals"></CreateNewButton>
                 </div>
                 <hr></hr>
