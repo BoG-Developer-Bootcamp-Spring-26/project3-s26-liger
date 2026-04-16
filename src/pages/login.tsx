@@ -29,8 +29,6 @@ export default function Login() {
                 return;
             }
             // redirect to dashboard on success
-
-            // pass in owner id
            
             router.push('/trainings');
         } catch (err) {
@@ -66,8 +64,7 @@ export default function Login() {
         <main className="flex justify-center px-6 pt-[115px]">
             <div className="w-[700px] origin-top scale-[0.92] px-4">
                 <h1
-                    className={`${heebo.className} text-center text-[64px] font-bold leading-none text-black`}
-                >
+                    className={`${heebo.className} text-center text-[64px] font-bold leading-none text-black`}>
                     Login
                 </h1>
 
