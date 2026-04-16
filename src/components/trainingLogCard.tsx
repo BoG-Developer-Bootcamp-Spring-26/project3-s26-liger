@@ -26,9 +26,11 @@ export const TrainingLogCard = ({
   hours,
   onClick,
 }: Props) => {
-  const day = date.getDate();
-  const month = date.toLocaleString("default", { month: "short" });
-  const year = date.getFullYear();
+  const parsedDate = new Date(date);
+
+  const day = parsedDate.getDate();
+  const month = parsedDate.toLocaleString("default", { month: "short" });
+  const year = parsedDate.getFullYear();
 
   return (
     <div className="flex w-6/7 rounded-xl bg-white drop-shadow font-heebo">

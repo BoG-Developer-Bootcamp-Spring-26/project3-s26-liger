@@ -64,6 +64,13 @@ export default function Trainings() {
           />
 
           <div className="flex flex-col flex-1">
+            <div className="header">
+              <h1 className="text-lg font-medium text-[#7C7171]">
+                Training logs
+              </h1>
+              <CreateNewButton currentPage="training"></CreateNewButton>
+            </div>
+            <hr className="border-[#615E5E66] w-full border" />
             <div className="flex flex-col items-center gap-4 ">
               <p className="m-3">You have no training logs.</p>
               <TrainingLogCard
