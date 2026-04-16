@@ -8,6 +8,7 @@ export default function Trainings() {
     const [logs, setLogs] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<any>(null);
+    const router = useRouter();
 
   useEffect(() => {
     const fetchUser = async() =>{
@@ -16,6 +17,8 @@ export default function Trainings() {
             const data = await res.json();
             if (res.ok) {
                 setUser(data.user);
+            } else {
+                router.push('/login');
             }
         }
         catch(e) {
@@ -43,6 +46,7 @@ export default function Trainings() {
   }, [user]);
 
   if (loading) return <div></div>;
+
 
   if (!logs || logs.length === 0) {
     return(
