@@ -74,22 +74,25 @@ export default function Trainings() {
   return(
         <div className="flex flex-row h-screen w-screen">
         <Sidebar currentPage="trainings" user={user.fullName} isAdmin={user.isAdmin}/>
-        <div className="flex flex-1 flex-col items-center gap-4 py-8">
-            <div className="header justify-between items-center">
+        <div className="flex flex-col flex-1 px-6">
+            <div className="header">
                 <p style={{fontSize:'20px'}}>Training Logs</p>
                 <CreateNewButton currentPage="training"></CreateNewButton>
             </div>
-        {logs.map((log: any) => (
-            <TrainingLogCard
-                user={user.fullName}
-                animal={log.animal.name}
-                breed = {log.animal.breed}
-                title={log.title}
-                date={log.date}
-                description={log.description}
-                hours={20}
-            />
-        ))}
+        <hr></hr>
+            <div className="flex flex-col items-center gap-4 py-8">
+                {logs.map((log: any) => (
+                    <TrainingLogCard
+                        user={user.fullName}
+                        animal={log.animal.name}
+                        breed = {log.animal.breed}
+                        title={log.title}
+                        date={log.date}
+                        description={log.description}
+                        hours={20}
+                    />
+                ))}
+                </div>
         </div>
         </div>
     );
