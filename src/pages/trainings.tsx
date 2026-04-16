@@ -34,16 +34,19 @@ export default function Trainings() {
     }
      const fetchLogs = async () => {
       try {
-        const res = await fetch(`/api/training?id=${user.userId}`);
-        const data = await res.json();
-        setLogs(data.logs || []);
-        setLoading(false);
+        const res = await fetch(`/api/users/training?userId=${user.userId}`);
+        if (res.ok) {
+            const data = await res.json();
+            setLogs(data.logs || []);
+            setLoading(false);
+        }
       } catch (e) {
         console.error(e);
       }
     };
   fetchLogs();
   }, [user]);
+
 
   if (loading) return <div></div>;
 
@@ -55,7 +58,7 @@ export default function Trainings() {
         
         <div className="flex flex-col flex-1 px-6">
         <div className="header">
-                <h1>Training Logs</h1>
+                <p style={{fontSize:'20px'}}>Training Logs</p>
                 <CreateNewButton currentPage="training"></CreateNewButton>
             </div>
             <hr></hr>
@@ -71,22 +74,25 @@ export default function Trainings() {
   return(
         <div className="flex flex-row h-screen w-screen">
         <Sidebar currentPage="trainings" user={user.fullName} isAdmin={user.isAdmin}/>
-        <div className="flex flex-1 flex-col items-center gap-4 py-8">
-            <div className="header justify-between items-center">
-                <h1>Training Logs</h1>
+        <div className="flex flex-col flex-1 px-6">
+            <div className="header">
+                <p style={{fontSize:'20px'}}>Training Logs</p>
                 <CreateNewButton currentPage="training"></CreateNewButton>
             </div>
-        {logs.map((log: any) => (
-            <TrainingLogCard
-                user={user.fullName}
-                animal={log.animal.name}
-                breed = {log.animal.breed}
-                title={log.title}
-                date={log.date}
-                description={log.description}
-                hours={20}
-            />
-        ))}
+        <hr></hr>
+            <div className="flex flex-col items-center gap-4 py-8">
+                {logs.map((log: any) => (
+                    <TrainingLogCard
+                        user={user.fullName}
+                        animal={log.animal.name}
+                        breed = {log.animal.breed}
+                        title={log.title}
+                        date={log.date}
+                        description={log.description}
+                        hours={log.hours}
+                    />
+                ))}
+                </div>
         </div>
         </div>
     );

@@ -31,7 +31,6 @@ export default function AnimalDashboard() {
     }
     fetchUser();
   }, []);
-
  
    
   useEffect(() => {
@@ -40,7 +39,7 @@ export default function AnimalDashboard() {
     }
      const fetchAnimals = async () => {
       try {
-        const res = await fetch(`/api/animal?id=${user.userId}`);
+        const res = await fetch(`/api/users/animal?ownerId=${user.userId}`);
         if (res.ok) {
             const data = await res.json();
             setAnimals(data.animals || []);
@@ -62,7 +61,7 @@ export default function AnimalDashboard() {
             
             <div className="flex flex-col flex-1 px-6">
             <div className="header">
-                    <h1>Animals</h1>
+                    <p style={{fontSize:'20px'}}>Animals</p>
                     <CreateNewButton currentPage="animals"></CreateNewButton>
                 </div>
                 <hr></hr>

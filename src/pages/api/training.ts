@@ -4,6 +4,7 @@ import { connectDb } from "../../../server/mongodb/connectDb"
 import TrainingLog from '../../../server/mongodb/models/trainingLog'
 
 import { createTrainingLog, deleteTrainingLog, updateTrainingLog, getTrainingLog } from "../../../server/mongodb/actions/trainingLogs";
+import {getAnimal} from "../../../server/mongodb/actions/animals";
 
 /*
 export interface TrainingLogData {
@@ -21,16 +22,19 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse)
 {
     if (req.method === 'GET') {
      try {
-        const { id } = await req.query;
+        const { id } = req.query;
+
         if (!id || Array.isArray(id)) {
-            return res.status(400).json({ error: "Missing user id." });                
+            return res.status(400).json({ error: "Missing id." });                
         }
-        
+
         const logs = await getTrainingLog(id);
+
         res.status(200).json({
-            logs:logs,
+            logs : logs,
             message: "successfully got logs"
-            }); 
+        }); 
+
         } catch(e) {
             return res.status(500).json({ error: "Server error" });
         }
