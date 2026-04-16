@@ -107,7 +107,7 @@ export default function AllAnimals() {
                     breed={animal.breed}
                     hours={animal.hoursTrained}
                     animalpfp={animal.profilePicture}
-                    userpfp={""}
+                    ownerName={animal.owner.fullName}
                   />
                 ))}
             </div>

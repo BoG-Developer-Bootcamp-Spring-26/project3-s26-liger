@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDb } from "../../../server/mongodb/connectDb";
-import TrainingLog from "../../../server/mongodb/models/trainingLog";
 
 import {
   createTrainingLog,
@@ -8,7 +7,6 @@ import {
   updateTrainingLog,
   getTrainingLogByUser,
 } from "../../../server/mongodb/actions/trainingLogs";
-import { getAnimal } from "../../../server/mongodb/actions/animals";
 
 /*
 export interface TrainingLogData {
@@ -48,8 +46,16 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       const { user, animal, title, date, description, hours } = req.body;
+      const parsedHours = Number(hours);
 
-      if (!user || !animal || !title || !date || !description || !hours) {
+      if (
+        !user ||
+        !animal ||
+        !title ||
+        !date ||
+        !description ||
+        Number.isNaN(parsedHours)
+      ) {
         return res.status(400).json({ error: "Missing fields" });
       }
 
@@ -59,7 +65,7 @@ export default async function handler(
         title,
         date,
         description,
-        hours,
+        hours: parsedHours,
       });
 
       return res.status(200).json({ message: "Training Log created" });
@@ -73,14 +79,25 @@ export default async function handler(
       if (!id) {
         return res.status(400).json({ error: "Missing id." });
       }
-      const newLog = updateTrainingLog(id, {
+      const parsedHours = Number(hours);
+
+      if (Number.isNaN(parsedHours)) {
+        return res.status(400).json({ error: "Invalid hours value." });
+      }
+
+      const newLog = await updateTrainingLog(id, {
         user,
         animal,
         title,
         date,
         description,
-        hours,
+        hours: parsedHours,
       });
+
+      if (!newLog) {
+        return res.status(404).json({ error: "Training log not found." });
+      }
+
       return res
         .status(200)
         .json({ message: "Training replaced successfully!", log: newLog });
@@ -97,14 +114,25 @@ export default async function handler(
         return res.status(400).json({ error: "Missing user id." });
       }
 
-      const newLog = updateTrainingLog(id, {
+      const parsedHours = hours === undefined ? undefined : Number(hours);
+
+      if (parsedHours !== undefined && Number.isNaN(parsedHours)) {
+        return res.status(400).json({ error: "Invalid hours value." });
+      }
+
+      const newLog = await updateTrainingLog(id, {
         user,
         animal,
         title,
         date,
         description,
-        hours,
+        ...(parsedHours !== undefined ? { hours: parsedHours } : {}),
       });
+
+      if (!newLog) {
+        return res.status(404).json({ error: "Training log not found." });
+      }
+
       return res
         .status(200)
         .json({ message: "Training updated successfully!", log: newLog });
@@ -126,6 +154,7 @@ export default async function handler(
       if (!result) {
         return res.status(404).json({ error: "Training log not found." });
       }
+
       return res.status(200).json("Successfully deleted training log");
     } catch (e) {
       return res.status(500).json({ error: "Error deleting training log." });

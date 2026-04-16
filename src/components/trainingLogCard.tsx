@@ -63,7 +63,6 @@ export const TrainingLogCard = ({
             className="self-center h-12 w-12 cursor-pointer"
           />
         )}
-        -
       </div>
     </div>
   );

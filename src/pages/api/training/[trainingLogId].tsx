@@ -1,7 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Types } from "mongoose";
 import { connectDb } from "../../../../server/mongodb/connectDb";
-import TrainingLog from "../../../../server/mongodb/models/trainingLog";
+import {
+  getTrainingLog,
+  updateTrainingLog,
+} from "../../../../server/mongodb/actions/trainingLogs";
 
 export default async function handler(
   req: NextApiRequest,
@@ -33,10 +36,16 @@ export default async function handler(
 
   if (req.method === "PUT" || req.method === "PATCH") {
     try {
-      const updatedTrainingLog = await updateTrainingLog(
-        trainingLogId,
-        req.body,
-      );
+      const parsedHours =
+        req.body.hours === undefined ? undefined : Number(req.body.hours);
+      if (parsedHours !== undefined && Number.isNaN(parsedHours)) {
+        return res.status(400).json({ error: "Invalid hours value" });
+      }
+
+      const updatedTrainingLog = await updateTrainingLog(trainingLogId, {
+        ...req.body,
+        ...(parsedHours !== undefined ? { hours: parsedHours } : {}),
+      });
 
       if (!updatedTrainingLog) {
         return res.status(404).json({ error: "Training log not found" });
@@ -50,16 +59,4 @@ export default async function handler(
 
   res.status(405).json({ error: "Method not allowed" });
 }
-
-async function getTrainingLog(id: string) {
-  return await TrainingLog.findById(id).populate("animal");
-}
-
-async function updateTrainingLog(id: string, data: any) {
-  return await TrainingLog.findByIdAndUpdate(id, data, {
-    new: true,
-    runValidators: true,
-  }).populate("animal");
-}
-
 connectDb();

@@ -96,7 +96,7 @@ export default function AnimalDashboard() {
                     breed={animal.breed}
                     hours={animal.hoursTrained}
                     animalpfp={animal.profilePicture}
-                    userpfp={""}
+                    ownerName={user.fullName}
                   />
                 ))}
             </div>

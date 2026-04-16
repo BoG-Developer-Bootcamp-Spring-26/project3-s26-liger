@@ -1,7 +1,15 @@
 import { useRouter } from "next/router";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/sidebar";
 import { TitleBar } from "@/components/titlebar";
+import arrowDownLogo from "../../public/images/arrowDownLogo.png";
+
+type Animal = {
+  _id: string;
+  name: string;
+  breed: string;
+};
 
 type FormData = {
   title: string;
@@ -24,19 +32,34 @@ export default function CreateLogPage() {
   const [saving, setSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [form, setForm] = useState<FormData>(initialForm);
+  const [animals, setAnimals] = useState<Animal[]>([]);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchPageData = async () => {
       try {
-        const res = await fetch("/api/me");
-        const data = await res.json();
+        const userRes = await fetch("/api/me");
+        const data = await userRes.json();
 
-        if (!res.ok) {
+        if (!userRes.ok) {
           router.push("/login");
           return;
         }
 
         setUser(data.user);
+
+        const animalsRes = await fetch(
+          `/api/users/animal?ownerId=${data.user.userId}`,
+        );
+
+        if (animalsRes.ok) {
+          const animalsData = await animalsRes.json();
+          const animalList = animalsData.animals ?? [];
+          setAnimals(animalList);
+
+          if (animalList.length > 0) {
+            setForm((prev) => ({ ...prev, animal: animalList[0]._id }));
+          }
+        }
       } catch (e) {
         router.push("/login");
       } finally {
@@ -44,7 +67,7 @@ export default function CreateLogPage() {
       }
     };
 
-    fetchUser();
+    fetchPageData();
   }, []);
 
   const onFieldChange = (field: keyof FormData, value: string) => {
@@ -78,7 +101,7 @@ export default function CreateLogPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           user: user.userId,
-          animal: form.animal.trim(),
+          animal: form.animal,
           title: form.title.trim(),
           date: new Date().toISOString(),
           description: form.description.trim(),
@@ -130,14 +153,32 @@ export default function CreateLogPage() {
             />
 
             <label className="mb-1 block text-lg font-semibold">
-              Animal ID
+              Select Animal
             </label>
-            <input
-              value={form.animal}
-              onChange={(e) => onFieldChange("animal", e.target.value)}
-              placeholder="Paste animal id"
-              className="mb-3 h-11 w-full rounded-md border border-[#C0BFBF] px-3 text-lg focus:outline-none"
-            />
+            <div className="relative mb-3">
+              <select
+                value={form.animal}
+                onChange={(e) => onFieldChange("animal", e.target.value)}
+                className="h-11 w-full appearance-none rounded-md border border-[#C0BFBF] bg-white px-3 pr-14 text-lg focus:outline-none"
+              >
+                {animals.length === 0 ? (
+                  <option value="">No animals found</option>
+                ) : (
+                  animals.map((animal) => (
+                    <option key={animal._id} value={animal._id}>
+                      {animal.name} - {animal.breed}
+                    </option>
+                  ))
+                )}
+              </select>
+              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
+                <Image
+                  src={arrowDownLogo}
+                  alt="dropdown arrow"
+                  className="h-7 w-7 object-contain"
+                />
+              </div>
+            </div>
 
             <label className="mb-1 block text-lg font-semibold">
               Total hours trained
