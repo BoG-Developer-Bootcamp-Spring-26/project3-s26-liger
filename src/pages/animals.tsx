@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import AnimalCard from "../components/animalCard";
 import { Sidebar } from "@/components/sidebar";
+import { useRouter } from "next/router";
 
 export default function AnimalDashboard() {
 
@@ -8,6 +9,7 @@ export default function AnimalDashboard() {
   const [loading, setLoading] = useState(true);
 
   const [user, setUser] = useState<any>(null);
+  const router = useRouter();
 
 
   useEffect(() => {
@@ -17,6 +19,8 @@ export default function AnimalDashboard() {
             const data = await res.json();
             if (res.ok) {
                 setUser(data.user);
+            } else {
+              router.push('/login');
             }
         }
         catch(e) {
