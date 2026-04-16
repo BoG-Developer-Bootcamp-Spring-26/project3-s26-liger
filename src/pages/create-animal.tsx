@@ -21,7 +21,7 @@ const initialForm: FormData = {
 export default function CreateAnimalPage() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [form, setForm] = useState<FormData>(initialForm);
@@ -32,21 +32,24 @@ export default function CreateAnimalPage() {
         const res = await fetch("/api/me");
         const data = await res.json();
 
-        if (!res.ok) {
+        if (res.ok) {
+          setUser(data.user);
+        } else {
           router.push("/login");
-          return;
         }
-
-        setUser(data.user);
       } catch (e) {
         router.push("/login");
       } finally {
-        setLoading(false);
+        setAuthLoading(false);
       }
     };
 
     fetchUser();
   }, []);
+
+  if (authLoading || !user) {
+    return <div></div>;
+  }
 
   const onFieldChange = (field: keyof FormData, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -94,8 +97,6 @@ export default function CreateAnimalPage() {
       setSaving(false);
     }
   };
-
-  if (loading) return <div></div>;
 
   return (
     <div className="flex h-screen w-screen flex-col">

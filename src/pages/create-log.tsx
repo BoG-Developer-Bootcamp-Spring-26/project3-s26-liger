@@ -28,7 +28,7 @@ const initialForm: FormData = {
 export default function CreateLogPage() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [form, setForm] = useState<FormData>(initialForm);
@@ -40,35 +40,38 @@ export default function CreateLogPage() {
         const userRes = await fetch("/api/me");
         const data = await userRes.json();
 
-        if (!userRes.ok) {
-          router.push("/login");
-          return;
-        }
+        if (userRes.ok) {
+          setUser(data.user);
 
-        setUser(data.user);
+          const animalsRes = await fetch(
+            `/api/users/animal?ownerId=${data.user.userId}`,
+          );
 
-        const animalsRes = await fetch(
-          `/api/users/animal?ownerId=${data.user.userId}`,
-        );
+          if (animalsRes.ok) {
+            const animalsData = await animalsRes.json();
+            const animalList = animalsData.animals ?? [];
+            setAnimals(animalList);
 
-        if (animalsRes.ok) {
-          const animalsData = await animalsRes.json();
-          const animalList = animalsData.animals ?? [];
-          setAnimals(animalList);
-
-          if (animalList.length > 0) {
-            setForm((prev) => ({ ...prev, animal: animalList[0]._id }));
+            if (animalList.length > 0) {
+              setForm((prev) => ({ ...prev, animal: animalList[0]._id }));
+            }
           }
+        } else {
+          router.push("/login");
         }
       } catch (e) {
         router.push("/login");
       } finally {
-        setLoading(false);
+        setAuthLoading(false);
       }
     };
 
     fetchPageData();
   }, []);
+
+  if (authLoading || !user) {
+    return <div></div>;
+  }
 
   const onFieldChange = (field: keyof FormData, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -122,8 +125,6 @@ export default function CreateLogPage() {
       setSaving(false);
     }
   };
-
-  if (loading) return <div></div>;
 
   return (
     <div className="flex h-screen w-screen flex-col">
