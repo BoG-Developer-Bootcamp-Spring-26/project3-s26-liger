@@ -52,14 +52,14 @@ export default async function handler(
 }
 
 async function getTrainingLog(id: string) {
-  return TrainingLog.findById(id);
+  return await TrainingLog.findById(id).populate("animal");
 }
 
 async function updateTrainingLog(id: string, data: any) {
-  return TrainingLog.findByIdAndUpdate(id, data, {
+  return await TrainingLog.findByIdAndUpdate(id, data, {
     new: true,
     runValidators: true,
-  });
+  }).populate("animal");
 }
 
 connectDb();

@@ -4,7 +4,7 @@ import Image from "next/image";
 import trainingLogCardEditButton from "../../public/images/trainingLogCardEditButton.png";
 
 type Props = {
-  id: string; // training log id
+  id?: string; // training log id
   user: string; // user name
   animal: string; // animal name
   breed: string; // animal breed
@@ -12,11 +12,12 @@ type Props = {
   date: Date; // date of training log
   description: string; // description of training log
   hours: number; // number of hours the training log records
-  onClick: (id: string) => void; // function to call when the card is clicked, should take in the id of the training log
+  onClick?: (id: string) => void; // function to call when the card is clicked, should take in the id of the training log
+  isEditable?: boolean; // whether the training log can be edited, if true an edit button will appear on the card
 };
 
 export const TrainingLogCard = ({
-  id,
+  id = "",
   user,
   animal,
   breed,
@@ -24,7 +25,8 @@ export const TrainingLogCard = ({
   date,
   description,
   hours,
-  onClick,
+  onClick = () => {},
+  isEditable = false,
 }: Props) => {
   const parsedDate = new Date(date);
 
@@ -53,12 +55,15 @@ export const TrainingLogCard = ({
         <p className="text-xs mt-3 ">{description}</p>
       </div>
       <div className="flex items-center absolute right-4 top-1/4">
-        <Image
-          src={trainingLogCardEditButton}
-          alt="edit button"
-          onClick={() => onClick(id)}
-          className="self-center h-12 w-12 cursor-pointer"
-        />
+        {isEditable && (
+          <Image
+            src={trainingLogCardEditButton}
+            alt="edit button"
+            onClick={() => onClick(id)}
+            className="self-center h-12 w-12 cursor-pointer"
+          />
+        )}
+        -
       </div>
     </div>
   );
