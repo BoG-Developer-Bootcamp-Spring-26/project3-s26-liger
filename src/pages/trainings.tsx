@@ -89,7 +89,7 @@ export default function Trainings() {
                         title={log.title}
                         date={log.date}
                         description={log.description}
-                        hours={20}
+                        hours={log.hours}
                     />
                 ))}
                 </div>
