@@ -60,25 +60,23 @@ export default function AllAnimals() {
         };
       fetchAnimals();
       }, [user, page]);
-    
-    fetchAnimals();
-  }, [user, page]);
 
   if (loading) return <div></div>;
 
   if (!animals || animals.length === 0) {
-        return (<div className="flex flex-row h-screen w-screen">
+        return (
+        <div className="flex flex-row h-screen w-screen">
                 <Sidebar currentPage="all-animals" user={user.fullName} isAdmin={user.isAdmin}/>
                 <div className="flex flex-col flex-1 px-6">
                 <div className="header">
-                        <p style="{{ fontSize: "20px" }}">All animals</p>
+                        <p style={{ fontSize: "20px" }}>All animals</p>
                         
                     </div>
                     <hr></hr>
                 <div>
                     <p className="margins-10px">There are no animals.</p>
                 </div>
-                </div>
+            </div>
             </div>
          );
    }
